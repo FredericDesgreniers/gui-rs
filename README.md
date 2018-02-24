@@ -1,1 +1,1 @@
-# gui-rs
+A project to learn how UI's work. Don't count on this becoming any good
