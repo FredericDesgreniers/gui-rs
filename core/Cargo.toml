@@ -1,0 +1,9 @@
+[package]
+name = "core"
+version = "0.1.0"
+authors = ["Frederic Desgreniers <fredericdesgreniers@gmail.com>"]
+build = "build.rs"
+
+[dependencies]
+sdl2 = "0.31.0"
+
