@@ -5,8 +5,10 @@ pub mod components;
 
 use rendering::Renderer;
 use components::Component;
+use components::visuals::Visual;
 
 use rendering::renderable::*;
+
 
 
 pub struct Application {

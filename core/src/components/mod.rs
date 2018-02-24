@@ -1,8 +1,8 @@
 pub mod positions;
+pub mod visuals;
 
 use self::positions::*;
-
-
+use self::visuals::*;
 
 use super::rendering::renderable::Renderable;
 use super::rendering::RenderingState;
@@ -25,8 +25,10 @@ impl Component {
 			visual_dimension: (0,0)
 		}
 	}
+}
 
-	pub fn update_visuals(&mut self) {
+impl Visual for Component {
+	fn update_visuals(&mut self) {
 		self.visual_position = match self.position {
 			ComponentPosition::Fixed {x, y} => {
 				(x,y)
