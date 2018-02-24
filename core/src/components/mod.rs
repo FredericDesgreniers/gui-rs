@@ -12,8 +12,7 @@ pub struct Component {
 	pub position: ComponentPosition,
 	pub dimension: ComponentDimension,
 
-	pub visual_position: (i32, i32),
-	pub visual_dimension: (u32, u32)
+	visuals: VisualContext
 }
 
 impl Component {
@@ -21,21 +20,20 @@ impl Component {
 		Component {
 			position,
 			dimension,
-			visual_position: (0,0),
-			visual_dimension: (0,0)
+			visuals: VisualContext::default()
 		}
 	}
 }
 
 impl Visual for Component {
-	fn update_visuals(&mut self) {
-		self.visual_position = match self.position {
+	fn update_visuals(&mut self, parent: Option<VisualContext>) {
+		self.visuals.position = match self.position {
 			ComponentPosition::Fixed {x, y} => {
 				(x,y)
 			}
 		};
 
-		self.visual_dimension = match self.dimension {
+		self.visuals.dimension = match self.dimension {
 			ComponentDimension::Fixed {width, height} => {
 				(width, height)
 			}
@@ -46,6 +44,6 @@ impl Visual for Component {
 impl Renderable for Component {
 	fn render(&self, rendering_state: &mut RenderingState) -> Result<(), String>{
 		rendering_state.set_color(255, 0, 0);
-		rendering_state.draw_rectangle(self.visual_position, self.visual_dimension)
+		rendering_state.draw_rectangle(self.visuals.position, self.visuals.dimension)
 	}
 }

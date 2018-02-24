@@ -30,7 +30,7 @@ impl Application {
 
 	pub fn run(&mut self) {
 		self.components.iter_mut().for_each(|ref mut component| {
-			component.update_visuals();
+			component.update_visuals(None);
 		});
 
 		loop {
