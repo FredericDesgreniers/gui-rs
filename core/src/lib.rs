@@ -34,7 +34,7 @@ impl Application {
 		};
 
 		self.components.iter_mut().for_each(|ref mut component| {
-			component.update_visuals(Some(root_visual_context));
+			component.update_visuals(&root_visual_context);
 		});
 
 		loop {

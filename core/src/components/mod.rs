@@ -2,6 +2,7 @@ pub mod positions;
 pub mod visuals;
 pub mod component;
 pub mod border;
+pub mod label;
 
 use self::positions::*;
 use self::visuals::*;
@@ -40,56 +41,11 @@ impl Component for ComponentBase {
 }
 
 impl Visual for ComponentBase {
-	fn update_visuals(&mut self, parent: Option<VisualContext>) {
+	fn update_visuals(&mut self, parent: &VisualContext) {
+		self.visuals.update_using_parent(&parent, Some(self.position), Some(self.dimension));
 
-		self.visuals.position = (
-			match self.position.x {
-				PositionValue::Fixed(x) => x,
-				PositionValue::Percent(x_percent) => {
-					if let Some(parent) = parent {
-						(parent.dimension.0 as f32 * x_percent) as i32
-					} else {
-						0
-					}
-				}
-			},
-			match self.position.y {
-				PositionValue::Fixed(y) => y,
-				PositionValue::Percent(y_percent) => {
-					if let Some(parent) = parent {
-						(parent.dimension.1 as f32 * y_percent) as i32
-					} else {
-						0
-					}
-				}
-			}
-		);
-
-		self.visuals.dimension = (
-			match self.dimension.width {
-				DimensionValue::Fixed(width) => width,
-				DimensionValue::Percent(width_percent) => {
-					if let Some(parent) = parent {
-						(parent.dimension.0 as f32 * width_percent) as u32
-					} else {
-						0
-					}
-				}
-			},
-			match self.dimension.height {
-				DimensionValue::Fixed(height) => height,
-				DimensionValue::Percent(height_percent) => {
-					if let Some(parent) = parent {
-						(parent.dimension.1 as f32 * height_percent) as u32
-					} else {
-						0
-					}
-				}
-			}
-		);
-
-		let visuals = self.visuals;
-		self.children.iter_mut().for_each(|ref mut child| child.update_visuals(Some(visuals)));
+		let visuals = &self.visuals;
+		self.children.iter_mut().for_each(|ref mut child| child.update_visuals(visuals));
 
 	}
 	fn visual_context(&self) -> &VisualContext {

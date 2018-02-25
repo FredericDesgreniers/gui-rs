@@ -8,7 +8,6 @@ pub struct Border {
 	child: Box<Component>
 }
 
-
 impl Border {
 	pub fn new(rgb: (u8, u8, u8), child: Box<Component>) -> Self {
 		Border {
@@ -20,7 +19,6 @@ impl Border {
 	pub fn child(&mut self) -> &mut Box<Component> {
 		&mut self.child
 	}
-
 }
 
 impl Component for Border {
@@ -30,7 +28,7 @@ impl Component for Border {
 }
 
 impl Visual for Border {
-	fn update_visuals(&mut self, parent: Option<VisualContext>) {
+	fn update_visuals(&mut self, parent: &VisualContext) {
 		self.child.update_visuals(parent);
 		self.visuals = self.child.visual_context().clone();
 	}
