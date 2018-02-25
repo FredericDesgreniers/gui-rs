@@ -1,16 +1,12 @@
 #![feature(use_nested_groups)]
 
 extern crate sdl2;
-
 mod rendering;
 pub mod components;
 
 use rendering::Renderer;
 use components::component::Component;
 use components::visuals::{VisualContext};
-
-
-
 
 pub struct Application {
 	renderer: Renderer,
@@ -46,22 +42,14 @@ impl Application {
 				return;
 			}
 
-
-
 			let mut rendering_state = self.renderer.start_render();
-
-
-
-
 
 			self.components.iter_mut().for_each(|ref mut component| {
 				component.render(&mut rendering_state.with_offset(component.visual_context().position)).expect("Could not draw a component");
 			});
 
 			rendering_state.end();
-
 		}
-
 	}
 }
 

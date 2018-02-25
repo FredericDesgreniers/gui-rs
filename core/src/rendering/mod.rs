@@ -48,14 +48,12 @@ impl Renderer {
 				_ => {}
 			}
 		}
-
 		return true;
 	}
 
 	pub fn start_render(&mut self) -> RenderingState{
 		RenderingState::new(&mut self.canvas)
 	}
-
 }
 
 pub struct RenderingState<'a> {
