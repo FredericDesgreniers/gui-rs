@@ -57,7 +57,9 @@ impl Renderer {
 }
 
 pub struct RenderingState<'a> {
-	canvas: &'a mut Canvas<sdl2::video::Window>
+	canvas: &'a mut Canvas<sdl2::video::Window>,
+	offset: (i32, i32),
+	is_root_state: bool
 }
 
 impl<'a> RenderingState<'a> {
@@ -66,7 +68,17 @@ impl<'a> RenderingState<'a> {
 		canvas.clear();
 
 		RenderingState {
-			canvas
+			canvas,
+			offset: (0,0),
+			is_root_state: true
+		}
+	}
+
+	pub fn with_offset(&mut self, offset: (i32, i32)) -> RenderingState {
+		RenderingState {
+			canvas: self.canvas,
+			offset: (self.offset.0 + offset.0, self.offset.1 + offset.1),
+			is_root_state: false
 		}
 	}
 
@@ -75,7 +87,7 @@ impl<'a> RenderingState<'a> {
 	}
 
 	pub fn draw_rectangle(&mut self, position: (i32, i32), dimensions: (u32, u32)) -> Result<(), String> {
-		self.canvas.draw_rect(Rect::new(position.0, position.1, dimensions.0, dimensions.1))
+		self.canvas.draw_rect(Rect::new(position.0 + self.offset.0, position.1 + self.offset.1, dimensions.0, dimensions.1))
 	}
 
 	pub fn end(self) {
@@ -85,6 +97,9 @@ impl<'a> RenderingState<'a> {
 
 impl<'a> Drop for RenderingState<'a> {
 	fn drop(&mut self) {
+		if !self.is_root_state {
+			return;
+		}
 		self.canvas.present();
 		::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
 	}

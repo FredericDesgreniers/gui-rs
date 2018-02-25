@@ -12,7 +12,9 @@ pub struct Component {
 	pub position: ComponentPosition,
 	pub dimension: ComponentDimension,
 
-	visuals: VisualContext
+	pub visuals: VisualContext,
+
+	children: Vec<Component>
 }
 
 impl Component {
@@ -20,8 +22,13 @@ impl Component {
 		Component {
 			position,
 			dimension,
-			visuals: VisualContext::default()
+			visuals: VisualContext::default(),
+			children: Vec::new()
 		}
+	}
+
+	pub fn register_child(&mut self, component: Component) {
+		self.children.push(component);
 	}
 }
 
@@ -37,13 +44,23 @@ impl Visual for Component {
 			ComponentDimension::Fixed {width, height} => {
 				(width, height)
 			}
-		}
+		};
+
+		let visuals = self.visuals;
+		self.children.iter_mut().for_each(|ref mut child| child.update_visuals(Some(visuals)));
+
 	}
 }
 
 impl Renderable for Component {
 	fn render(&self, rendering_state: &mut RenderingState) -> Result<(), String>{
 		rendering_state.set_color(255, 0, 0);
-		rendering_state.draw_rectangle(self.visuals.position, self.visuals.dimension)
+		rendering_state.draw_rectangle((0, 0), self.visuals.dimension)?;
+
+		for child in &self.children {
+			child.render(&mut rendering_state.with_offset(child.visuals.position))?;
+		}
+
+		Ok(())
 	}
 }

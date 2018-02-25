@@ -41,7 +41,7 @@ impl Application {
 			let mut rendering_state = self.renderer.start_render();
 
 			self.components.iter_mut().for_each(|ref mut component| {
-				component.render(&mut rendering_state).expect("Could not draw a component");
+				component.render(&mut rendering_state.with_offset(component.visuals.position)).expect("Could not draw a component");
 			});
 
 			rendering_state.end();
