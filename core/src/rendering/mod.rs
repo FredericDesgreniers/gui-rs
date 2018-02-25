@@ -30,8 +30,10 @@ impl Renderer {
 		}else {
 			Err(String::from("Could not create subsystem... "))
 		}
+	}
 
-
+	pub fn window_size(&self) -> (u32, u32){
+		(800, 600)
 	}
 
 	pub fn process_events(&mut self) -> bool{
@@ -57,7 +59,7 @@ impl Renderer {
 }
 
 pub struct RenderingState<'a> {
-	canvas: &'a mut Canvas<sdl2::video::Window>,
+	pub canvas: &'a mut Canvas<sdl2::video::Window>,
 	offset: (i32, i32),
 	is_root_state: bool
 }

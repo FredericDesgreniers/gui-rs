@@ -43,6 +43,14 @@ impl Visual for Component {
 		self.visuals.dimension = match self.dimension {
 			ComponentDimension::Fixed {width, height} => {
 				(width, height)
+			},
+			ComponentDimension::Percent {width, height} => {
+				if let Some(parent_visual_context) = parent {
+					((parent_visual_context.dimension.0 as f32 * width) as u32,
+					(parent_visual_context.dimension.1 as f32 * height) as u32)
+				} else {
+					(0,0)
+				}
 			}
 		};
 

@@ -5,7 +5,7 @@ pub mod components;
 
 use rendering::Renderer;
 use components::Component;
-use components::visuals::Visual;
+use components::visuals::{VisualContext, Visual};
 
 use rendering::renderable::*;
 
@@ -29,8 +29,15 @@ impl Application {
 	}
 
 	pub fn run(&mut self) {
+		let window_size = self.renderer.window_size();
+
+		let root_visual_context = VisualContext {
+			position: (0, 0),
+			dimension: (window_size.0, window_size.1),
+		};
+
 		self.components.iter_mut().for_each(|ref mut component| {
-			component.update_visuals(None);
+			component.update_visuals(Some(root_visual_context));
 		});
 
 		loop {
@@ -38,7 +45,13 @@ impl Application {
 				return;
 			}
 
+
+
 			let mut rendering_state = self.renderer.start_render();
+
+
+
+
 
 			self.components.iter_mut().for_each(|ref mut component| {
 				component.render(&mut rendering_state.with_offset(component.visuals.position)).expect("Could not draw a component");
