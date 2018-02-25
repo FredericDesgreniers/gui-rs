@@ -1,12 +1,20 @@
-pub enum ComponentPosition {
-	Fixed{x: i32, y: i32},
-
+pub enum PositionValue {
+	Fixed(i32),
+	Percent(f32)
 }
 
-
-pub enum ComponentDimension {
-	Fixed{width: u32, height:u32},
-	Percent{width: f32, height: f32}
+pub struct Position {
+	pub x: PositionValue,
+	pub y: PositionValue
 }
 
+pub enum DimensionValue {
+	Fixed(u32),
+	Percent(f32)
+}
+
+pub struct Dimension {
+	pub width: DimensionValue,
+	pub height: DimensionValue
+}
 

@@ -2,7 +2,7 @@
 
 extern crate core;
 use core::components::{ComponentBase, border::Border, component::Component};
-use core::components::positions::{ComponentPosition, ComponentDimension};
+use core::components::positions::*;
 
 
 
@@ -11,10 +11,17 @@ pub fn main() {
 
 
 
-	let mut component1 = Border::new((0,0,0), Box::new(ComponentBase::new(ComponentPosition::Fixed{x: 10, y: 10}, ComponentDimension::Percent {width: 0.5, height:0.5})));
+	let mut component1 = Border::new((0,0,0),
+									 Box::new(ComponentBase::new(
+										 Position{x: PositionValue::Percent(0.1), y: PositionValue::Percent(0.1)},
+										 Dimension {width: DimensionValue::Percent(0.8), height:DimensionValue::Percent(0.8)})
+									 ));
 
 	let component2 = Border::new((0, 0, 0),
-								 Box::new(ComponentBase::new(ComponentPosition::Fixed{x: 20, y: 10}, ComponentDimension::Fixed{width: 200, height:50})));
+								 Box::new(ComponentBase::new(
+									 Position{x: PositionValue::Percent(0.5), y: PositionValue::Fixed(10)},
+									 Dimension{width: DimensionValue::Fixed(300), height:DimensionValue::Fixed(50)})
+								 ));
 
 
 
