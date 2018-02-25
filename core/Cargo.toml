@@ -5,5 +5,10 @@ authors = ["Frederic Desgreniers <fredericdesgreniers@gmail.com>"]
 build = "build.rs"
 
 [dependencies]
-sdl2 = "0.31.0"
+rayon = "1.0.0"
 
+
+[dependencies.sdl2]
+version = "0.31.0"
+default-features = false
+features = ["ttf"]
