@@ -66,7 +66,7 @@ pub struct RenderingState<'a> {
 
 impl<'a> RenderingState<'a> {
 	fn new(canvas: &'a mut sdl2::render::Canvas<sdl2::video::Window>) -> Self {
-		canvas.set_draw_color(Color::RGB(0, 0, 0));
+		canvas.set_draw_color(Color::RGB(200, 200, 200));
 		canvas.clear();
 
 		RenderingState {
@@ -90,6 +90,10 @@ impl<'a> RenderingState<'a> {
 
 	pub fn draw_rectangle(&mut self, position: (i32, i32), dimensions: (u32, u32)) -> Result<(), String> {
 		self.canvas.draw_rect(Rect::new(position.0 + self.offset.0, position.1 + self.offset.1, dimensions.0, dimensions.1))
+	}
+
+	pub fn fill_rect(&mut self, position: (i32, i32), dimensions: (u32, u32)) -> Result<(), String> {
+		self.canvas.fill_rect(Rect::new(position.0 + self.offset.0, position.1 + self.offset.1, dimensions.0, dimensions.1))
 	}
 
 	pub fn end(self) {

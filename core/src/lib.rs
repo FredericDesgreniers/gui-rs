@@ -1,10 +1,12 @@
+#![feature(use_nested_groups)]
+
 extern crate sdl2;
 
 mod rendering;
 pub mod components;
 
 use rendering::Renderer;
-use components::ComponentBase;
+use components::component::Component;
 use components::visuals::{VisualContext, Visual};
 
 use rendering::renderable::*;
@@ -13,7 +15,7 @@ use rendering::renderable::*;
 
 pub struct Application {
 	renderer: Renderer,
-	components: Vec<Box<ComponentBase>>
+	components: Vec<Box<Component>>
 }
 
 impl Application {
@@ -24,7 +26,7 @@ impl Application {
 		}
 	}
 
-	pub fn register_component(&mut self, component: Box<ComponentBase>) {
+	pub fn register_component(&mut self, component: Box<Component>) {
 		self.components.push(component);
 	}
 
@@ -54,7 +56,7 @@ impl Application {
 
 
 			self.components.iter_mut().for_each(|ref mut component| {
-				component.render(&mut rendering_state.with_offset(component.visuals.position)).expect("Could not draw a component");
+				component.render(&mut rendering_state.with_offset(component.visual_context().position)).expect("Could not draw a component");
 			});
 
 			rendering_state.end();

@@ -1,6 +1,7 @@
 pub mod positions;
 pub mod visuals;
 pub mod component;
+pub mod border;
 
 use self::positions::*;
 use self::visuals::*;
@@ -29,13 +30,13 @@ impl ComponentBase {
 		}
 	}
 
-	pub fn register_child(&mut self, component: Box<Component>) {
-		self.children.push(component);
-	}
+
 }
 
 impl Component for ComponentBase {
-
+	fn register_child(&mut self, component: Box<Component>) {
+		self.children.push(component);
+	}
 }
 
 impl Visual for ComponentBase {
@@ -71,8 +72,9 @@ impl Visual for ComponentBase {
 
 impl Renderable for ComponentBase {
 	fn render(&self, rendering_state: &mut RenderingState) -> Result<(), String>{
-		rendering_state.set_color(255, 0, 0);
-		rendering_state.draw_rectangle((0, 0), self.visuals.dimension)?;
+		rendering_state.set_color(255, 255, 255);
+		rendering_state.fill_rect((0, 0), self.visuals.dimension)?;
+
 
 		for child in &self.children {
 			child.render(&mut rendering_state.with_offset(child.visual_context().position))?;
