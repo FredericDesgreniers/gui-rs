@@ -1,7 +1,7 @@
 #![feature(use_nested_groups)]
 
 extern crate core;
-use core::components::{ComponentBase, border::Border};
+use core::components::{component_base::ComponentBase, border::Border};
 use core::components::positions::*;
 
 

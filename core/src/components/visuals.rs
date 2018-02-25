@@ -1,4 +1,4 @@
-use super::Renderable;
+use super::super::rendering::renderable::Renderable;
 use super::positions::*;
 
 pub trait Visual : Renderable{
