@@ -1,12 +1,15 @@
 #![feature(use_nested_groups)]
 
 extern crate sdl2;
+extern crate rayon;
+
 mod rendering;
 pub mod components;
 
 use rendering::Renderer;
 use components::component::Component;
 use components::visuals::{VisualContext};
+use rayon::prelude::*;
 
 pub struct Application {
 	renderer: Renderer,
@@ -33,7 +36,7 @@ impl Application {
 			dimension: (window_size.0, window_size.1),
 		};
 
-		self.components.iter_mut().for_each(|ref mut component| {
+		self.components.par_iter_mut().for_each(|component| {
 			component.update_visuals(&root_visual_context);
 		});
 
@@ -42,9 +45,13 @@ impl Application {
 				return;
 			}
 
+			self.components.par_iter_mut().for_each(|component| {
+				component.tick();
+			});
+
 			let mut rendering_state = self.renderer.start_render();
 
-			self.components.iter_mut().for_each(|ref mut component| {
+			self.components.iter_mut().for_each(|component| {
 				component.render(&mut rendering_state.with_offset(component.visual_context().position)).expect("Could not draw a component");
 			});
 

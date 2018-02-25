@@ -1,10 +1,9 @@
 use super::positions::*;
 use super::visuals::*;
 use super::component::Component;
-
 use super::super::rendering::renderable::Renderable;
 use super::super::rendering::RenderingState;
-
+use rayon::prelude::*;
 
 pub struct ComponentBase {
 	pub position: Position,
@@ -37,7 +36,7 @@ impl Visual for ComponentBase {
 		self.visuals.update_using_parent(&parent, Some(self.position), Some(self.dimension));
 
 		let visuals = &self.visuals;
-		self.children.iter_mut().for_each(|ref mut child| child.update_visuals(visuals));
+		self.children.par_iter_mut().for_each(|ref mut child| child.update_visuals(visuals));
 
 	}
 	fn visual_context(&self) -> &VisualContext {

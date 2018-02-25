@@ -3,7 +3,6 @@ use super::visuals::{Visual, VisualContext};
 use super::super::rendering::{RenderingState, renderable::Renderable};
 use super::positions::*;
 
-
 struct Label {
 	position: Position,
 	visuals: VisualContext,
