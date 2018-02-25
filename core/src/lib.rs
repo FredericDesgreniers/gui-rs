@@ -7,9 +7,8 @@ pub mod components;
 
 use rendering::Renderer;
 use components::component::Component;
-use components::visuals::{VisualContext, Visual};
+use components::visuals::{VisualContext};
 
-use rendering::renderable::*;
 
 
 
