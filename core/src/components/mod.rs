@@ -1,25 +1,27 @@
 pub mod positions;
 pub mod visuals;
+pub mod component;
 
 use self::positions::*;
 use self::visuals::*;
+use self::component::Component;
 
 use super::rendering::renderable::Renderable;
 use super::rendering::RenderingState;
 
 
-pub struct Component {
+pub struct ComponentBase {
 	pub position: ComponentPosition,
 	pub dimension: ComponentDimension,
 
 	pub visuals: VisualContext,
 
-	children: Vec<Component>
+	children: Vec<Box<Component>>
 }
 
-impl Component {
+impl ComponentBase {
 	pub fn new(position: ComponentPosition, dimension: ComponentDimension) -> Self{
-		Component {
+		ComponentBase {
 			position,
 			dimension,
 			visuals: VisualContext::default(),
@@ -27,12 +29,16 @@ impl Component {
 		}
 	}
 
-	pub fn register_child(&mut self, component: Component) {
+	pub fn register_child(&mut self, component: Box<Component>) {
 		self.children.push(component);
 	}
 }
 
-impl Visual for Component {
+impl Component for ComponentBase {
+
+}
+
+impl Visual for ComponentBase {
 	fn update_visuals(&mut self, parent: Option<VisualContext>) {
 		self.visuals.position = match self.position {
 			ComponentPosition::Fixed {x, y} => {
@@ -58,15 +64,18 @@ impl Visual for Component {
 		self.children.iter_mut().for_each(|ref mut child| child.update_visuals(Some(visuals)));
 
 	}
+	fn visual_context(&self) -> &VisualContext {
+		&self.visuals
+	}
 }
 
-impl Renderable for Component {
+impl Renderable for ComponentBase {
 	fn render(&self, rendering_state: &mut RenderingState) -> Result<(), String>{
 		rendering_state.set_color(255, 0, 0);
 		rendering_state.draw_rectangle((0, 0), self.visuals.dimension)?;
 
 		for child in &self.children {
-			child.render(&mut rendering_state.with_offset(child.visuals.position))?;
+			child.render(&mut rendering_state.with_offset(child.visual_context().position))?;
 		}
 
 		Ok(())

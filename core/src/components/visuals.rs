@@ -2,6 +2,7 @@ use super::Renderable;
 
 pub trait Visual : Renderable{
 	fn update_visuals(&mut self, parent: Option<VisualContext>);
+	fn visual_context(&self) -> &VisualContext;
 }
 
 #[derive(Default, Copy, Clone)]

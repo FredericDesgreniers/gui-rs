@@ -4,7 +4,7 @@ mod rendering;
 pub mod components;
 
 use rendering::Renderer;
-use components::Component;
+use components::ComponentBase;
 use components::visuals::{VisualContext, Visual};
 
 use rendering::renderable::*;
@@ -13,7 +13,7 @@ use rendering::renderable::*;
 
 pub struct Application {
 	renderer: Renderer,
-	components: Vec<Component>
+	components: Vec<Box<ComponentBase>>
 }
 
 impl Application {
@@ -24,7 +24,7 @@ impl Application {
 		}
 	}
 
-	pub fn register_component(&mut self, component: Component) {
+	pub fn register_component(&mut self, component: Box<ComponentBase>) {
 		self.components.push(component);
 	}
 
