@@ -23,9 +23,7 @@ impl Component for Label {
 
 impl Visual for Label {
 	fn update_visuals(&mut self, parent: &VisualContext) {
-
-
-		self.visuals.update_using_parent(&parent, Some(self.position), Some(self.dimension));
+		unimplemented!()
 	}
 
 	fn visual_context(&self) -> &VisualContext {
